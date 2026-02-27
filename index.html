@@ -3,31 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="[App description — shown in search results and link previews]">
-  <title>[App Name]</title>
+  <meta name="description" content="Find and apply to hundreds of college scholarships — filtered by your goals, background, and budget.">
+  <title>ScholarPath — Find Your College Funding</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to results</a>
+
   <header class="site-header">
-    <h1>[App Name]</h1>
-    <p class="tagline">[One-sentence description of what this does for the user]</p>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🎓</span>
+        <div>
+          <h1 class="brand-name">ScholarPath</h1>
+          <p class="tagline">Find the scholarships that are right for <em>you</em></p>
+        </div>
+      </div>
+      <div class="header-stats" aria-live="polite" aria-atomic="true">
+        <span id="result-count" class="stat-chip">
+          <span id="count-number">—</span> scholarships
+        </span>
+      </div>
+    </div>
   </header>
 
-  <main id="main-content">
+  <div class="app-layout">
 
-    <!-- Your app content goes here -->
-    <section class="welcome">
-      <h2>Getting started</h2>
-      <p>Replace this placeholder with your app's first milestone content.</p>
-    </section>
+    <!-- Search + Filters Sidebar -->
+    <aside class="filters-panel" aria-label="Search and filter scholarships">
 
-  </main>
+      <div class="search-bar-wrap">
+        <label for="search-input" class="visually-hidden">Search scholarships</label>
+        <div class="search-input-group">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search by name, topic, or keyword…"
+            autocomplete="off"
+            spellcheck="false"
+          >
+        </div>
+      </div>
+
+      <div class="filters-header">
+        <h2 class="filters-title">Filter &amp; Sort</h2>
+        <button class="clear-filters-btn" id="clear-filters" aria-label="Clear all filters">Clear all</button>
+      </div>
+
+      <!-- Sort -->
+      <div class="filter-group">
+        <label class="filter-label" for="sort-select">Sort by</label>
+        <select id="sort-select" class="filter-select">
+          <option value="amount-desc">Highest amount</option>
+          <option value="amount-asc">Lowest amount</option>
+          <option value="deadline">Earliest deadline</option>
+          <option value="likelihood">Best odds first</option>
+          <option value="name">A – Z</option>
+        </select>
+      </div>
+
+      <!-- Amount Range -->
+      <div class="filter-group">
+        <fieldset class="filter-fieldset">
+          <legend class="filter-label">Scholarship amount</legend>
+          <div class="amount-inputs">
+            <div class="amount-field">
+              <label for="amount-min" class="amount-label">Min ($)</label>
+              <input type="number" id="amount-min" class="amount-input" placeholder="0" min="0" step="500">
+            </div>
+            <span class="amount-sep" aria-hidden="true">—</span>
+            <div class="amount-field">
+              <label for="amount-max" class="amount-label">Max ($)</label>
+              <input type="number" id="amount-max" class="amount-input" placeholder="Any" min="0" step="500">
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Type -->
+      <div class="filter-group">
+        <fieldset class="filter-fieldset">
+          <legend class="filter-label">Scholarship type</legend>
+          <div class="checkbox-list" id="filter-type">
+            <label class="checkbox-item"><input type="checkbox" name="type" value="merit"> Merit-based</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="need-based"> Need-based</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="identity"> Identity / Background</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="field-of-study"> Field of Study</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="community-service"> Community Service</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="stem"> STEM</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="arts"> Arts &amp; Humanities</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="essay"> Essay Competition</label>
+            <label class="checkbox-item"><input type="checkbox" name="type" value="regional"> Regional / State</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Year Eligible -->
+      <div class="filter-group">
+        <fieldset class="filter-fieldset">
+          <legend class="filter-label">Who can apply</legend>
+          <div class="checkbox-list" id="filter-year">
+            <label class="checkbox-item"><input type="checkbox" name="year" value="High School Senior"> High School Seniors</label>
+            <label class="checkbox-item"><input type="checkbox" name="year" value="Undergraduate"> Current Undergrads</label>
+            <label class="checkbox-item"><input type="checkbox" name="year" value="Any"> Open to All</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Likelihood -->
+      <div class="filter-group">
+        <fieldset class="filter-fieldset">
+          <legend class="filter-label">Odds of winning</legend>
+          <div class="checkbox-list" id="filter-likelihood">
+            <label class="checkbox-item"><input type="checkbox" name="likelihood" value="high"> <span class="likelihood-dot high" aria-hidden="true"></span> Higher odds</label>
+            <label class="checkbox-item"><input type="checkbox" name="likelihood" value="medium"> <span class="likelihood-dot medium" aria-hidden="true"></span> Moderate odds</label>
+            <label class="checkbox-item"><input type="checkbox" name="likelihood" value="low"> <span class="likelihood-dot low" aria-hidden="true"></span> Highly competitive</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Toggles -->
+      <div class="filter-group">
+        <fieldset class="filter-fieldset">
+          <legend class="filter-label">Options</legend>
+          <div class="toggle-list">
+            <label class="toggle-item">
+              <span class="toggle-label">Renewable awards only</span>
+              <span class="toggle-wrap">
+                <input type="checkbox" id="filter-renewable" role="switch">
+                <span class="toggle-track" aria-hidden="true"></span>
+              </span>
+            </label>
+            <label class="toggle-item">
+              <span class="toggle-label">No essay required</span>
+              <span class="toggle-wrap">
+                <input type="checkbox" id="filter-no-essay" role="switch">
+                <span class="toggle-track" aria-hidden="true"></span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- GPA -->
+      <div class="filter-group">
+        <label class="filter-label" for="filter-gpa">Min GPA required (max)</label>
+        <div class="gpa-wrap">
+          <input type="range" id="filter-gpa" min="0" max="4" step="0.1" value="4" class="gpa-slider">
+          <output id="gpa-output" class="gpa-output" for="filter-gpa">Any</output>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Main Results -->
+    <main id="main-content" class="results-area">
+
+      <div class="results-toolbar">
+        <p class="results-summary" id="results-summary" aria-live="polite" aria-atomic="true"></p>
+        <div class="view-toggle" role="group" aria-label="View style">
+          <button class="view-btn active" id="view-grid" aria-pressed="true" title="Grid view">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="currentColor">
+              <rect x="1" y="1" width="7" height="7" rx="1"/><rect x="10" y="1" width="7" height="7" rx="1"/>
+              <rect x="1" y="10" width="7" height="7" rx="1"/><rect x="10" y="10" width="7" height="7" rx="1"/>
+            </svg>
+            <span class="visually-hidden">Grid view</span>
+          </button>
+          <button class="view-btn" id="view-list" aria-pressed="false" title="List view">
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="currentColor">
+              <rect x="1" y="2" width="16" height="3" rx="1"/><rect x="1" y="7.5" width="16" height="3" rx="1"/>
+              <rect x="1" y="13" width="16" height="3" rx="1"/>
+            </svg>
+            <span class="visually-hidden">List view</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="scholarship-grid" class="scholarship-grid" role="list" aria-label="Scholarship results">
+        <!-- Cards rendered by JS -->
+      </div>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <p class="empty-icon" aria-hidden="true">🔭</p>
+        <h2>No scholarships match those filters</h2>
+        <p>Try broadening your search — remove a filter or clear them all.</p>
+        <button class="btn-primary" id="empty-clear">Clear all filters</button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Scholarship Detail Modal -->
+  <div id="modal-backdrop" class="modal-backdrop" hidden aria-hidden="true"></div>
+  <div id="scholarship-modal" class="scholarship-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close" aria-label="Close scholarship details">&times;</button>
+      <div id="modal-content" class="modal-content">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
 
   <footer class="site-footer">
-    <p>[App Name] &mdash; built with care</p>
+    <p>ScholarPath &mdash; helping students fund their future &mdash; <a href="https://github.com/bhwilkoff/College-Scholarship-Support" rel="noopener">open source on GitHub</a></p>
+    <p class="footer-note">Always verify scholarship details directly with the sponsoring organization before applying.</p>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
