@@ -1,5 +1,5 @@
 /**
- * app.js — ScholarPath
+ * app.js — Scholarshipping
  *
  * Search, filter, sort, and display scholarship cards.
  * Data lives in js/data.js (SCHOLARSHIPS array).
