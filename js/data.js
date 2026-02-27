@@ -666,9 +666,9 @@ const SCHOLARSHIPS = [
     essay_required: true,
     state: "National",
     year_eligible: "Undergraduate",
-    description: "For graduate-level study or vocational training that aligns with Rotary's areas of focus: peace, disease prevention, water, sanitation, maternal health, basic education, or economic development.",
+    description: "Minimum $30,000 for graduate-level study abroad aligned with Rotary's humanitarian areas. Funding is 50% district, 50% Rotary Foundation. Apply through your local Rotary club at least 3 months before intended departure.",
     url: "https://www.rotary.org/en/our-programs/scholarships",
-    tags: ["international", "peace", "service", "global", "vocational"],
+    tags: ["international", "peace", "service", "global", "graduate"],
     likelihood: "low"
   },
   {
