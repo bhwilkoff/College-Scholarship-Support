@@ -325,8 +325,8 @@ function openModal(id) {
     </div>
   `;
 
-  dom.modalBackdrop.hidden = false;
-  dom.modal.hidden = false;
+  dom.modalBackdrop.classList.add('modal-open');
+  dom.modal.classList.add('modal-open');
   dom.modalBackdrop.removeAttribute('aria-hidden');
   dom.modal.removeAttribute('aria-hidden');
 
@@ -337,8 +337,8 @@ function openModal(id) {
 }
 
 function closeModal() {
-  dom.modal.hidden = true;
-  dom.modalBackdrop.hidden = true;
+  dom.modal.classList.remove('modal-open');
+  dom.modalBackdrop.classList.remove('modal-open');
   dom.modal.setAttribute('aria-hidden', 'true');
   dom.modalBackdrop.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
