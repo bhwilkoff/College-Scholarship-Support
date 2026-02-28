@@ -261,6 +261,186 @@ function renderResults() {
 }
 
 // ============================================================
+// M2 — AI Prompt Template Generator
+// ============================================================
+
+const REFLECTION_QUESTIONS = {
+  'merit': [
+    'Describe one specific achievement you\'re most proud of. What obstacles did you have to push through to get there?',
+    'Tell me about a time you led something or took initiative when no one asked you to. What happened, and what did you learn about yourself?',
+    'If you receive this scholarship, what becomes possible that isn\'t possible right now?',
+  ],
+  'need-based': [
+    'How has financial pressure shaped your approach to school, work, or your plans for the future? Be concrete — give me a real example.',
+    'What do you want someone who has never had to worry about money to understand about your situation and what you\'ve had to figure out on your own?',
+    'What will this scholarship make possible that isn\'t possible without it? Be as specific as you can.',
+  ],
+  'identity': [
+    'How has your background, identity, or lived experience shaped the way you see the world or approach problems? Give me a specific example, not a general statement.',
+    'What does your community need that you are in a unique position to provide — and why you, specifically?',
+    'Why does this particular scholarship resonate with who you are? What is it actually recognizing about you?',
+  ],
+  'stem': [
+    'What specific problem or question in your field keeps you up at night? Where did that curiosity first come from?',
+    'Walk me through a project, experiment, or research experience — even one that failed. What did it reveal about how you think?',
+    'Who benefits from the work you want to do, and how will you make sure your work actually reaches them?',
+  ],
+  'field-of-study': [
+    'What was the moment — a class, a book, a conversation, an experience — that made you certain this is the field for you?',
+    'What question in your field do most people overlook, but you think is really important? Why does it matter to you?',
+    'How does the specific school or program you\'re targeting connect to exactly where you want to go?',
+  ],
+  'community-service': [
+    'What community need did you identify, and what did you actually do about it? Be specific about your role — what did YOU do, not what the group did?',
+    'What did doing this service work teach you about yourself — your limits, your strengths, or something you didn\'t expect to find out?',
+    'What\'s still unfinished? If you had more time or resources, what would you do next?',
+  ],
+  'arts': [
+    'What are you trying to say or create that you haven\'t fully figured out how to express yet? What\'s getting in the way?',
+    'Who has influenced your work most, and where has your artistic voice started to diverge from theirs?',
+    'How does your creative practice connect to the world outside the studio, stage, or page?',
+  ],
+  'essay': [
+    'What is the single most important thing you want the reader to know about you after finishing this essay?',
+    'What story from your life shows — rather than just tells — who you are? Why that story, and not another?',
+    'What would be missing from this application if your essay didn\'t exist?',
+  ],
+  'regional': [
+    'What ties you to this place — your state, town, or region — and how has it shaped who you\'ve become?',
+    'What does your community need more of, and how do you plan to contribute to that, either now or after college?',
+    'What would bring you back to this place after college, or what will you carry forward from it no matter where you go?',
+  ],
+  'athletic': [
+    'What has competitive sport taught you about handling setbacks, failure, or something not going the way you planned?',
+    'Describe a moment in your athletic career that demanded more from you mentally or emotionally than physically.',
+    'How does being an athlete connect to your goals and who you\'re becoming beyond sports?',
+  ],
+};
+
+const DEFAULT_QUESTIONS = [
+  'What motivates you most deeply, and where did that drive first come from?',
+  'What challenge have you faced that required you to grow in a way you didn\'t expect?',
+  'What do you want your future to look like, and why does this scholarship matter to getting there?',
+];
+
+function buildAiPrompt(s, name, school, major, activities) {
+  const questions = REFLECTION_QUESTIONS[s.type] || DEFAULT_QUESTIONS;
+  const amountStr = formatAmountFull(s.amount) + (s.renewable ? '/year (renewable)' : ' (one-time)');
+  const nameStr       = name.trim()       || 'the applicant';
+  const schoolStr     = school.trim()     || '(school not yet specified)';
+  const majorStr      = major.trim()      || '(major not yet specified)';
+  const activitiesStr = activities.trim() || '(not yet filled in)';
+  const qLines = questions.map((q, i) => `${i + 1}. ${q}`).join('\n\n');
+
+  return `You are coaching me through applying for a scholarship. You have one strict rule: you must NEVER write any part of my application for me. Your job is to help me find my own words by asking the right questions and pushing me to be specific.
+
+━━━ SCHOLARSHIP I'M APPLYING FOR ━━━
+Name: ${s.name}
+Organization: ${s.organization}
+Award: ${amountStr}
+What it looks for: ${s.description}
+
+━━━ ABOUT ME ━━━
+My name: ${nameStr}
+School I'm targeting: ${schoolStr}
+Intended major / field: ${majorStr}
+My key activities and achievements:
+${activitiesStr}
+
+━━━ PHASE 1 — REFLECTION (start here) ━━━
+Ask me the following questions ONE AT A TIME.
+Wait for my full answer before moving on.
+Do not comment on my answers yet — just listen and receive.
+
+${qLines}
+
+━━━ PHASE 2 — SHAPING (only after Phase 1 is complete) ━━━
+Once I have answered all ${questions.length} questions, help me:
+- Find the most authentic, specific thread running through my answers
+- Call out anywhere I'm being vague or generic, and ask me to go deeper
+- Help me structure my thinking into a clear narrative arc
+- Suggest what to lead with and why
+
+Final reminder: Guide me. Never write for me. Every sentence must be in my voice.`;
+}
+
+function renderPromptSection(s) {
+  return `
+    <div class="prompt-section modal-section">
+      <p class="modal-section-title">Prepare with AI</p>
+      <p class="prompt-intro">Fill in a few details about yourself, then generate a structured AI prompt. It won't write your application — it will ask you the hard questions first, so you do.</p>
+      <div class="prompt-form" role="group" aria-label="Your information for the AI prompt">
+        <div class="prompt-field">
+          <label class="prompt-label" for="prompt-name">Your name</label>
+          <input class="prompt-input" id="prompt-name" type="text" placeholder="e.g. Jordan Rivera" autocomplete="given-name">
+        </div>
+        <div class="prompt-field">
+          <label class="prompt-label" for="prompt-school">School you're targeting</label>
+          <input class="prompt-input" id="prompt-school" type="text" placeholder="e.g. University of Michigan">
+        </div>
+        <div class="prompt-field">
+          <label class="prompt-label" for="prompt-major">Intended major or field of study</label>
+          <input class="prompt-input" id="prompt-major" type="text" placeholder="e.g. Computer Science, Nursing, Film">
+        </div>
+        <div class="prompt-field">
+          <label class="prompt-label" for="prompt-activities">Key activities and achievements</label>
+          <textarea class="prompt-input prompt-activities" id="prompt-activities" rows="3" placeholder="e.g. Debate team captain, 200+ hours tutoring middle schoolers in math, built a weather app used by 500+ students…"></textarea>
+        </div>
+      </div>
+      <button class="btn-build-prompt" id="btn-build-prompt" type="button">Build my AI prompt →</button>
+      <div class="prompt-output" id="prompt-output" hidden>
+        <p class="prompt-output-label">Copy this prompt and paste it into Claude, ChatGPT, or any AI assistant:</p>
+        <textarea class="prompt-result" id="prompt-result" readonly aria-label="Generated AI prompt — copy and paste into your AI tool"></textarea>
+        <div class="prompt-copy-row">
+          <button class="btn-copy" id="btn-copy-prompt" type="button">Copy to clipboard</button>
+          <span class="copy-confirm" id="copy-confirm" aria-live="polite" hidden>✓ Copied!</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function onModalContentClick(e) {
+  if (e.target.closest('#btn-build-prompt')) {
+    const s = SCHOLARSHIPS.find(x => x.id === state.openId);
+    if (!s) return;
+    const name       = document.getElementById('prompt-name').value;
+    const school     = document.getElementById('prompt-school').value;
+    const major      = document.getElementById('prompt-major').value;
+    const activities = document.getElementById('prompt-activities').value;
+    const prompt = buildAiPrompt(s, name, school, major, activities);
+    const resultEl = document.getElementById('prompt-result');
+    const outputEl = document.getElementById('prompt-output');
+    resultEl.value = prompt;
+    outputEl.hidden = false;
+    // Scroll the result into view smoothly
+    outputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    resultEl.focus();
+    return;
+  }
+
+  if (e.target.closest('#btn-copy-prompt')) {
+    const resultEl  = document.getElementById('prompt-result');
+    const confirmEl = document.getElementById('copy-confirm');
+    const showConfirm = () => {
+      confirmEl.hidden = false;
+      setTimeout(() => { confirmEl.hidden = true; }, 3000);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(resultEl.value).then(showConfirm).catch(() => {
+        resultEl.select();
+        document.execCommand('copy');
+        showConfirm();
+      });
+    } else {
+      resultEl.select();
+      document.execCommand('copy');
+      showConfirm();
+    }
+  }
+}
+
+// ============================================================
 // Rendering — Modal
 // ============================================================
 
@@ -323,6 +503,8 @@ function openModal(id) {
         Apply for this scholarship →
       </a>
     </div>
+
+    ${renderPromptSection(s)}
   `;
 
   dom.modalBackdrop.classList.add('modal-open');
@@ -522,6 +704,7 @@ function init() {
 
   dom.modalClose.addEventListener('click', closeModal);
   dom.modalBackdrop.addEventListener('click', closeModal);
+  dom.modalContent.addEventListener('click', onModalContentClick);
   document.addEventListener('keydown', e => {
     if (!dom.modal.hidden) onModalKeydown(e);
   });
