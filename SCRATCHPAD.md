@@ -5,20 +5,19 @@
 > **Keep this block short and current.** Update it at the end of every session.
 > This is the first thing Claude reads — make it worth reading.
 
-**Status**: M1 complete — fully working scholarship search app live on GitHub Pages.
-**Active milestone**: M2 — AI Prompt Template Generator
-**Last session**: [2026-02-27]
+**Status**: M2 complete — AI Prompt Template Generator live. Modal now includes a reflection-first prompt builder.
+**Active milestone**: M3 — Robust Interface and Branding
+**Last session**: [2026-02-28]
 
 **Next actions**:
-- [ ] M2: Add scholarship detail view with AI prompt template generator
-  - Select a scholarship → generate a structured AI prompt tailored to that scholarship's specific questions/essay requirements
-  - Prompt should be a "guardrail" framework — forces reflection, not shortcuts
-  - Include editable fields (applicant's name, school, major, extracurriculars) that customize the prompt
 - [ ] M3: Social-card visual redesign — make each scholarship feel like a "post" to interact with
+  - Cards should feel like objects to interact with, not table rows
+  - Consider TikTok/Instagram card aesthetic — large visuals, interactive feel
+  - Decide: keep dark theme only, or offer light/dark toggle?
 
 **Open questions**:
-- Should the AI prompt be copyable to clipboard, or should it link directly to a chat interface (Claude, ChatGPT, etc.)?
 - For M3, do we keep the dark theme or offer light/dark toggle?
+- Should cards have micro-interactions (swipe, like/save, etc.) or stay click-to-open?
 
 ---
 
@@ -50,19 +49,19 @@ The user can see hundreds (100) of scholarships available that are filterable by
 - [x] Sorting and Filtering capabilities (sort by amount/deadline/likelihood/name; filter by type, year, state, GPA, essay, renewable, likelihood, amount range)
 - [x] Large selection of metadata for each scholarship (amount, deadline, type, year eligible, GPA req, essay req, renewable, state, likelihood, tags, organization, URL)
 
-### M2 — AI Prompt Template Generator
+### M2 — AI Prompt Template Generator ✅
 
 The user can select any scholarship and generate an AI prompt suitable for use in a modern AI agent/chat interface that will help with the development of answers to the specific scholarship form/questions. This feature should be very specific in that it creates guardrails for the applicant to use with AI so that all responses require significant thought and co-creation before submitting materials for any given scholarship.
 
 **Learning-orientation check**:
-- [ ] Deepens understanding
-- [ ] Invites participation
-- [ ] Supports human agency
+- [x] Deepens understanding — reflection questions surface what the selection committee is actually looking for; students leave with clearer self-knowledge
+- [x] Invites participation — the form requires the student to articulate their own story before any AI is involved; Phase 1 demands answers before any help
+- [x] Supports human agency — AI is explicitly instructed not to write for the student; every sentence stays in their voice
 
 **Acceptance criteria**:
-- [ ] Ability to adjust prompts based upon user preferences
-- [ ] Understanding of what each application requires (questions, essays, information, etc.)
-- [ ] Intuitive guardrails so that the applicant learns something about themselves as they are constructing responses to the scholarship applications
+- [x] Ability to adjust prompts based upon user preferences (name, school, major, activities fields)
+- [x] Understanding of what each application requires (type-tailored reflection questions matched to what each scholarship values)
+- [x] Intuitive guardrails so that the applicant learns something about themselves (two-phase structure: reflect first, shape second)
 
 ### M3 — Robust Interface and Branding
 
@@ -100,3 +99,18 @@ The user is able to intuitively use the search and support service within a mode
 - Committed and pushed to `claude/start-work-CAiMc`
 
 **Left**: M1 complete. App is live. 100 scholarships searchable and filterable. Ready for M2 (AI Prompt Template Generator).
+
+### Session 2 — 2026-02-28
+
+**Found**: M1 complete. Modal showing scholarship details. M2 not yet started.
+
+**Did**:
+- Built AI Prompt Template Generator (M2) — "Prepare with AI" section in every scholarship modal
+- Applicant fills in name, school, major, and key activities/achievements
+- Generates a two-phase guardrail prompt: Phase 1 asks 3 reflection questions one at a time (type-tailored per scholarship); Phase 2 only helps shape the student's own answers
+- 10 type-specific question sets (merit, need-based, identity, STEM, field-of-study, community-service, arts, essay, regional, athletic) + default fallback
+- Copy-to-clipboard with accessible confirmation feedback
+- New CSS for all prompt UI elements, consistent with existing dark design system
+- Updated SCRATCHPAD.md with M2 complete status
+
+**Left**: M2 complete. Ready for M3 (Robust Interface and Branding — social-card visual redesign).
