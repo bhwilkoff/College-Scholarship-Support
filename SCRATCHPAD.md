@@ -5,15 +5,34 @@
 > **Keep this block short and current.** Update it at the end of every session.
 > This is the first thing Claude reads — make it worth reading.
 
-**Status**: M2 complete — AI Prompt Template Generator live. Modal now includes a reflection-first prompt builder.
+**Status**: M2 complete — AI Prompt Template Generator live. Database expanded to 236 scholarships.
 **Active milestone**: M3 — Robust Interface and Branding
-**Last session**: [2026-02-28]
+**Last session**: [2026-03-04]
+
+**Database expansion progress** (sequential category research — Category 1 of 7 complete):
+- [x] Category 1: Merit / Essay / Service — 86 new entries added (IDs 151–236)
+- [ ] Category 2: STEM
+- [ ] Category 3: Identity / Diversity
+- [ ] Category 4: Need-Based
+- [ ] Category 5: Regional / State-Specific
+- [ ] Category 6: Arts
+- [ ] Category 7: Athletic
+
+**Research methodology (use for subsequent categories)**:
+1. Grep existing names to avoid duplicates before searching
+2. Use one Agent to research ALL scholarships in the category at once (ask for 100+)
+3. Agent returns summary only — then resume agent to get data in **3 batches of ~33** (not all at once)
+4. Manually filter duplicates against existing DB before writing
+5. Write to data.js in 3 sequential Edit calls (each ~30 entries) to stay under token limits
+6. Validate with `node -e` script that modifies `const` → `global` before eval
+7. Set `CLAUDE_CODE_MAX_OUTPUT_TOKENS=100000` in `~/.zshenv` (already done)
 
 **Next actions**:
 - [ ] M3: Social-card visual redesign — make each scholarship feel like a "post" to interact with
   - Cards should feel like objects to interact with, not table rows
   - Consider TikTok/Instagram card aesthetic — large visuals, interactive feel
   - Decide: keep dark theme only, or offer light/dark toggle?
+- [ ] Continue database expansion with Category 2: STEM
 
 **Open questions**:
 - For M3, do we keep the dark theme or offer light/dark toggle?
@@ -114,3 +133,19 @@ The user is able to intuitively use the search and support service within a mode
 - Updated SCRATCHPAD.md with M2 complete status
 
 **Left**: M2 complete. Ready for M3 (Robust Interface and Branding — social-card visual redesign).
+
+### Session 3 — 2026-03-04
+
+**Found**: M2 complete. 150 scholarships in database. Previous attempts at parallel multi-agent research failed due to token limits.
+
+**Did**:
+- Set `CLAUDE_CODE_MAX_OUTPUT_TOKENS=100000` in `~/.zshenv` to fix output truncation
+- Researched Category 1 (Merit/Essay/Service) sequentially using a single Agent with 3 resume calls for batched output
+- Added 86 net-new scholarships (IDs 151–236) across three subcategories:
+  - Merit/Academic Excellence: 27 entries (Cameron Impact, Posse, NHS, Daniels, CBYX, USSYP, etc.)
+  - Essay/Writing Competitions: 31 entries (National History Day, DAR Good Citizens, USIP Peace Essay, YoungArts Writing, etc.)
+  - Community Service/Civic Engagement: 28 entries (Huntington Public Service, Diller Tikkun Olam, Bonner Scholarship, etc.)
+- Documented research methodology in SCRATCHPAD for reuse across remaining 6 categories
+- Validated file with Node.js; database now at 236 total scholarships
+
+**Left**: 236 scholarships live. Database expansion 1/7 categories complete. M3 interface work not yet started.
